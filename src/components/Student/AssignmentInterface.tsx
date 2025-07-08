@@ -94,9 +94,13 @@ const AssignmentInterface: React.FC<AssignmentInterfaceProps> = ({
       }
     }
   }, [latestSubmission, assignmentResult]);
+      // Generate a proper submission ID
+      const submissionId = isFinal 
+        ? `${user.uid}_${selectedAssignment.id}_${Date.now()}`
+        : `${user.uid}_${selectedAssignment.id}_draft`;
 
   // Auto-save functionality
-  useEffect(() => {
+        id: submissionId,
     if (hasUnsavedChanges && assignmentStarted && !assignmentCompleted && canEdit) {
       if (autoSaveTimer) {
         clearTimeout(autoSaveTimer);
@@ -143,8 +147,8 @@ const AssignmentInterface: React.FC<AssignmentInterfaceProps> = ({
   const handleSubmit = (isFinal: boolean = true) => {
     setAssignmentCompleted(isFinal);
     onSubmit(answers, isFinal);
+      console.error('Assignment submission error details:', error);
     setHasUnsavedChanges(false);
-    
     if (isFinal) {
       setLastSaved(new Date());
     }

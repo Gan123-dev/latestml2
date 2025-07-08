@@ -122,13 +122,18 @@ export const saveAssignmentSubmission = async (submission: AssignmentSubmission)
       await setDoc(submissionRef, submissionData, { merge: true });
     } else {
       // For final submissions, create a new document
+      // Generate a unique ID for final submissions
+      const finalSubmissionId = submission.id || `${submission.userId}_${submission.assignmentId}_${Date.now()}`;
+      const submissionRef = doc(db, 'assignment_submissions', finalSubmissionId);
+      
       const submissionData = {
         ...submission,
+        id: finalSubmissionId,
         submittedAt: submission.submittedAt || serverTimestamp(),
         createdAt: serverTimestamp()
       };
       
-      await addDoc(collection(db, 'assignment_submissions'), submissionData);
+      await setDoc(submissionRef, submissionData);
       
       // Remove any existing draft
       const draftId = `${submission.userId}_${submission.assignmentId}_draft`;
@@ -136,6 +141,7 @@ export const saveAssignmentSubmission = async (submission: AssignmentSubmission)
         await deleteDoc(doc(db, 'assignment_submissions', draftId));
       } catch (error) {
         // Draft might not exist, which is fine
+        console.log('No draft to delete, which is fine');
       }
     }
     

@@ -189,8 +189,12 @@ const CoursesView: React.FC = () => {
       const dueDate = new Date(selectedAssignment.dueDate);
       const isLate = now > dueDate && isFinal;
 
+      // Generate a proper submission ID
+      const submissionId = isFinal 
+        ? `${user.uid}_${selectedAssignment.id}_${Date.now()}`
+        : `${user.uid}_${selectedAssignment.id}_draft`;
       const submission: AssignmentSubmission = {
-        id: isFinal ? Math.random().toString(36).substr(2, 9) : `${user.uid}_${selectedAssignment.id}_draft`,
+        id: submissionId,
         userId: user.uid,
         assignmentId: selectedAssignment.id,
         answers,
@@ -237,8 +241,8 @@ const CoursesView: React.FC = () => {
         toast.success('Draft saved successfully!');
       }
     } catch (error) {
+      console.error('Assignment submission error details:', error);
       toast.error(isFinal ? 'Failed to submit assignment' : 'Failed to save draft');
-      console.error('Assignment submission error:', error);
     } finally {
       setAssignmentLoading(false);
     }
