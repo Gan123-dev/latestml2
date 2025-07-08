@@ -193,17 +193,23 @@ const CoursesView: React.FC = () => {
       const submissionId = isFinal 
         ? `${user.uid}_${selectedAssignment.id}_${Date.now()}`
         : `${user.uid}_${selectedAssignment.id}_draft`;
-      const submission: AssignmentSubmission = {
+      
+      // Create base submission object
+      const baseSubmission = {
         id: submissionId,
         userId: user.uid,
         assignmentId: selectedAssignment.id,
         answers,
-        submittedAt: isFinal ? now.toISOString() : undefined,
-        lastSavedAt: !isFinal ? now.toISOString() : undefined,
         isSubmitted: isFinal,
         isLate,
         autoGraded: true,
         timeSpent: 0 // This would be calculated based on start time
+      };
+      
+      // Add timestamp fields conditionally to avoid undefined values
+      const submission: AssignmentSubmission = {
+        ...baseSubmission,
+        ...(isFinal ? { submittedAt: now.toISOString() } : { lastSavedAt: now.toISOString() })
       };
 
       // Only auto-grade if it's a final submission and deadline has passed
