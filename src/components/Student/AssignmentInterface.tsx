@@ -379,7 +379,7 @@ const AssignmentInterface: React.FC<AssignmentInterfaceProps> = ({
           {assignmentResult.feedback && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <h3 className="font-medium text-blue-900 mb-2">Instructor Feedback</h3>
-              <p className="text-blue-800">{assignmentResult.feedback}</p>
+              <p className="text-blue-800">{assignmentResult.submission.feedback}</p>
             </div>
           )}
 
