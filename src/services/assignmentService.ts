@@ -104,6 +104,8 @@ export const deleteAssignment = async (assignmentId: string): Promise<void> => {
 // Assignment Submissions - Modified to support draft submissions
 export const saveAssignmentSubmission = async (submission: AssignmentSubmission): Promise<void> => {
   try {
+    console.log('Saving assignment submission:', submission);
+    
     // Check if this is a draft or final submission
     const isDraft = !submission.isSubmitted;
     
@@ -148,6 +150,7 @@ export const saveAssignmentSubmission = async (submission: AssignmentSubmission)
     console.log('Assignment submission saved successfully');
   } catch (error) {
     console.error('Error saving assignment submission:', error);
+    console.error('Submission data:', submission);
     throw new Error('Failed to save assignment submission');
   }
 };

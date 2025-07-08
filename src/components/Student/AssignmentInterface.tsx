@@ -62,7 +62,7 @@ const AssignmentInterface: React.FC<AssignmentInterfaceProps> = ({
   const [showPreview, setShowPreview] = useState(false);
 
   const isOverdue = isAssignmentOverdue(assignment);
-  const canEdit = canEditAssignment(assignment, latestSubmission);
+  const canEdit = canEditAssignment(assignment);
 
   useEffect(() => {
     if (assignmentStarted && assignment.timeLimit && !assignmentCompleted) {
